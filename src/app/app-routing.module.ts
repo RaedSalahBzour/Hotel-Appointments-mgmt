@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'list', component: ReservationListComponent },
   { path: 'new', component: ReservationFormComponent },
+  { path: 'update/:id', component: ReservationFormComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
 
