@@ -1,1 +1,52 @@
-<p>reservation-list works!</p>
+<div class="container py-5">
+  <h2 class="text-center text-primary mb-5 fw-bold">Reservation List</h2>
+  <div
+    *ngIf="reservations.length; else noReservations"
+    class="row justify-content-center g-4"
+  >
+    <div class="col-md-6 col-lg-4" *ngFor="let reservation of reservations">
+      <div
+        class="card h-100 border-0 shadow-lg rounded-4"
+        style="background-color: #f8f9fa"
+      >
+        <div class="card-header bg-primary text-white rounded-top-4">
+          <h5 class="mb-0 text-center">
+            <i class="bi bi-person-circle me-2"></i>{{ reservation.guestName }}
+          </h5>
+        </div>
+        <div class="card-body">
+          <p class="mb-2">
+            <i class="bi bi-envelope-at text-danger me-2"></i>
+            <strong>Email: </strong>
+            <span class="text-dark">{{ reservation.guestEmail }}</span>
+          </p>
+          <p class="mb-2">
+            <i class="bi bi-calendar-check text-success me-2"></i>
+            <strong>Check-In: </strong>
+            <span class="text-dark">{{ reservation.checkInDate }}</span>
+          </p>
+          <p class="mb-2">
+            <i class="bi bi-calendar-x text-warning me-2"></i>
+            <strong>Check-Out: </strong>
+            <span class="text-dark">{{ reservation.checkOutDate }}</span>
+          </p>
+          <p class="mb-0">
+            <i class="bi bi-door-open text-info me-2"></i>
+            <strong>Room #: </strong>
+            <span class="text-dark">{{ reservation.roomNumber }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #noReservations>
+  <div
+    class="d-flex justify-content-center align-items-center"
+    style="height: 200px"
+  >
+    <h4 class="text-muted">
+      <i class="bi bi-info-circle me-2"></i>No Reservations.
+    </h4>
+  </div>
+</ng-template>
