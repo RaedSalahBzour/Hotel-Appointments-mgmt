@@ -1,47 +1,37 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Reservation } from '../models/reservation';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReservationService {
   private reservations: Reservation[] = [];
-  constructor() {
-    let storedReservations = localStorage.getItem('reservations');
-    this.reservations = storedReservations
-      ? JSON.parse(storedReservations)
-      : [];
+  private Url = 'http://localhost:3000';
+  constructor(private httpClient: HttpClient) {}
+  getReservations(): Observable<Reservation[]> {
+    return this.httpClient.get<Reservation[]>(this.Url + '/reservations');
   }
-  getReservations(): Reservation[] {
-    return this.reservations;
+  getReservation(id: string): Observable<Reservation> | undefined {
+    return this.httpClient.get<Reservation>(this.Url + '/reservation/' + id);
   }
-  getReservation(id: string): Reservation | undefined {
-    return this.reservations.find((res) => res.id === id);
+  addReservation(reservation: Reservation): Observable<Reservation> {
+    return this.httpClient.post<Reservation>(
+      this.Url + '/reservation',
+      reservation
+    );
   }
-  addReservation(reservation: Reservation): void {
-    reservation.id = Date.now().toString();
-    this.reservations.push(reservation);
-    this.seedLocalStorage(this.reservations);
-  }
-  deleteReservation(id: string): void {
-    let index = this.reservations.findIndex((res) => res.id === id);
-    if (index !== -1) this.reservations.splice(index, 1);
-    this.seedLocalStorage(this.reservations);
+  deleteReservation(id: string): Observable<Reservation> {
+    return this.httpClient.delete<Reservation>(this.Url + '/reservation/' + id);
   }
   updateReservation(
     id: string,
-    updatedReservation: Partial<Reservation>
-  ): void {
-    let index = this.reservations.findIndex((res) => res.id === id);
-    if (index !== -1) {
-      this.reservations[index] = {
-        ...this.reservations[index],
-        ...updatedReservation,
-      };
-    }
-    this.seedLocalStorage(this.reservations);
-  }
-  seedLocalStorage(reservations: Reservation[]) {
-    localStorage.setItem('reservations', JSON.stringify(reservations));
+    updatedReservation: Reservation
+  ): Observable<Reservation> {
+    return this.httpClient.put<Reservation>(
+      this.Url + '/reservation/' + id,
+      updatedReservation
+    );
   }
 }
