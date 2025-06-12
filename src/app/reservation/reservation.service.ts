@@ -22,8 +22,8 @@ export class ReservationService {
       reservation
     );
   }
-  deleteReservation(id: string): Observable<Reservation> {
-    return this.httpClient.delete<Reservation>(this.Url + '/reservation/' + id);
+  deleteReservation(id: string): Observable<void> {
+    return this.httpClient.delete<void>(this.Url + '/reservation/' + id);
   }
   updateReservation(
     id: string,
